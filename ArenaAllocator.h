@@ -11,9 +11,6 @@
 #include <cstdint>
 #include <vector>
 
-// Delete this
-#include <iostream>
-
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -195,8 +192,6 @@ class ArenaAllocator_t
 
                 // too far gone.
                 assert(m_pMemory != nullptr && "Why is this nullptr?");
-
-                printf("Initialized Arena\n");
             }
 
 
