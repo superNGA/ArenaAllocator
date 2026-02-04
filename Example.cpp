@@ -1,4 +1,5 @@
 #include "ArenaAllocator.h"
+#include <stdio.h>
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -15,22 +16,25 @@ int main(void)
 
     // Before free.
     printf("Total size     : %llu\n", arena.TotalSize());
-    printf("Total Capacity : %llu\n", arena.TotalCapacity());
+    printf("Total Capacity : 0x%llX\n", arena.TotalCapacity());
     printf("Total Arenas   : %zu\n",  arena.ArenaCount());
+    printf("\n");
 
     arena.ResetAllArena();
 
     // After free.
     printf("Total size     : %llu\n", arena.TotalSize());
-    printf("Total Capacity : %llu\n", arena.TotalCapacity());
+    printf("Total Capacity : 0x%llX\n", arena.TotalCapacity());
     printf("Total Arenas   : %zu\n",  arena.ArenaCount());
+    printf("\n");
 
     arena.FreeAll();
 
     // After free.
     printf("Total size     : %llu\n", arena.TotalSize());
-    printf("Total Capacity : %llu\n", arena.TotalCapacity());
+    printf("Total Capacity : 0x%llX\n", arena.TotalCapacity());
     printf("Total Arenas   : %zu\n",  arena.ArenaCount());
+    printf("\n");
 
     return 0;
 }

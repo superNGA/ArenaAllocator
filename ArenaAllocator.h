@@ -18,10 +18,12 @@
 class ArenaAllocator_t
 {
     public:
-        ArenaAllocator_t() 
+        ArenaAllocator_t(uint64_t iArenaSize = DEFAULT_ARENA_SIZE)
         {
             m_vecArenas.clear();
             m_vecManualAllocs.clear();
+
+            m_iArenaSize = iArenaSize;
         }
         ArenaAllocator_t(const ArenaAllocator_t& other) = delete; // No copying.
  
@@ -30,7 +32,7 @@ class ArenaAllocator_t
         ///////////////////////////////////////////////////////////////////////////
         inline void* Allocate(size_t iSize)
         {
-            return iSize <= ARENA_SIZE ? AllocateToArena(iSize) : AllocateByMalloc(iSize);
+            return iSize <= m_iArenaSize ? AllocateToArena(iSize) : AllocateByMalloc(iSize);
         }
 
 
@@ -125,7 +127,7 @@ class ArenaAllocator_t
             if(m_vecArenas.empty() == true)
             {
                 m_vecArenas.emplace_back(Arena_t());
-                m_vecArenas.back().InitializeArena(ARENA_SIZE);
+                m_vecArenas.back().InitializeArena(m_iArenaSize);
             }
 
             Arena_t* pArena = &m_vecArenas.back();
@@ -146,7 +148,7 @@ class ArenaAllocator_t
             // In case we don't have enough space, we need to allcoate one more arena.
             m_vecArenas.emplace_back(Arena_t());
             pArena = &m_vecArenas.back();
-            pArena->InitializeArena(ARENA_SIZE);
+            pArena->InitializeArena(m_iArenaSize);
             pArena->m_iUsedTill = iSize;
             return pArena->m_pMemory;
         }
@@ -201,7 +203,8 @@ class ArenaAllocator_t
         };
 
 
-        const uint64_t ARENA_SIZE = 4 * 1024; // 4 KiB by default.
+        static const uint64_t DEFAULT_ARENA_SIZE = 4 * 1024; // 4 KiB by default.
+        uint64_t m_iArenaSize = DEFAULT_ARENA_SIZE;
                                                                 
 
         // All arena objects made.
